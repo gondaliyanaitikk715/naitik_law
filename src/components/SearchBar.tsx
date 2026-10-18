@@ -1,0 +1,4 @@
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Search} from 'lucide-react';
+export default function SearchBar({compact=false,initialValue=''}:{compact?:boolean;initialValue?:string}){const [query,setQuery]=useState(initialValue);const navigate=useNavigate();return <form className={`search-bar ${compact?'compact':''}`} role="search" onSubmit={e=>{e.preventDefault();navigate(`/search?q=${encodeURIComponent(query.trim())}`)}}><Search size={23} aria-hidden="true"/><label className="sr-only" htmlFor={compact?'header-search':'hero-search'}>Search legal content</label><input id={compact?'header-search':'hero-search'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search Section, Article, Act, Case or Topic..."/><button type="submit">Search</button></form>}
