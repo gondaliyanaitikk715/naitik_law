@@ -18,7 +18,7 @@ VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_PUBLISHABLE_KEY
 ```
 
-Optionally set `VITE_SITE_URL=https://YOUR_PUBLIC_DOMAIN` for the build-generated sitemap. On Netlify the generator automatically uses Netlify's `URL` variable if `VITE_SITE_URL` is absent.
+Optionally set `VITE_SITE_URL=https://YOUR_PUBLIC_DOMAIN` for the build-generated sitemap. On Netlify the generator automatically uses Netlify's `URL` variable if `VITE_SITE_URL` is absent. For this Sites publication, `site.config.json` provides the verified deployed origin as the final fallback; an explicit environment variable overrides it.
 
 ```bash
 npm run dev

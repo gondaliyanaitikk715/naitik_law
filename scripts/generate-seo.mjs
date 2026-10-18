@@ -1,11 +1,12 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadEnv } from 'vite';
 
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const env = loadEnv('production', projectRoot, ['VITE_', 'URL']);
-const candidate = process.env.VITE_SITE_URL || env.VITE_SITE_URL || process.env.URL || env.URL || '';
+const config = JSON.parse(await readFile(join(projectRoot, 'site.config.json'), 'utf8'));
+const candidate = process.env.VITE_SITE_URL || env.VITE_SITE_URL || process.env.URL || env.URL || config.canonicalOrigin || '';
 
 function canonicalOrigin(value) {
   if (!value || /[\u0000-\u001f\u007f]/.test(value)) return '';
