@@ -27,7 +27,7 @@ Content queries explicitly filter `status = 'published'`, use server-side filter
 
 ## SEO, mobile and hosting
 
-Dynamic route metadata includes titles, descriptions, Open Graph tags and canonical URLs. The build generates robots and a 12-route sitemap using `VITE_SITE_URL` or Netlify's automatic `URL`. Detailed content URLs can be added to sitemap generation by the existing publishing pipeline. Metadata is client rendered; the static homepage also has default title and description metadata.
+Dynamic route metadata includes titles, descriptions, Open Graph tags and canonical URLs. The build generates robots and a 21-route sitemap (including Family Law and the eight imported Act/section detail URLs) using `VITE_SITE_URL` or Netlify's automatic `URL`. Detailed content URLs can be added to sitemap generation by the existing publishing pipeline. Metadata is client rendered; the static homepage also has default title and description metadata.
 
 The design uses the supplied navy/gold/red branding, an original legal hero, responsive grids, mobile navigation and chapter controls, lazy images, focus indicators, labelled forms and reduced-motion support. Every screen works without a configured or populated database and presents an honest loading, error, unavailable or empty state.
 
@@ -36,10 +36,16 @@ Netlify is configured for `npm run build` and `dist`, with SPA fallback rules in
 ## Remaining owner setup
 
 1. Set the **existing Admin Panel project's** `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` before building. Never use a service-role key.
-2. Confirm the Admin Panel's columns against docs/SUPABASE.md and adjust field mappings if necessary. Only table names were supplied with the brief, so live schema compatibility requires this check.
+2. Confirm the Admin Panel's columns against docs/SUPABASE.md and adjust field mappings if necessary. The original integration targets Supabase; the later uploaded file uses a different MySQL seed schema. Its selected public records are mapped to the website interfaces. Live Supabase schema compatibility still requires this check.
 3. Enforce published-only public SELECT policies, keep private columns/admin tables inaccessible, and enable a safe subscriber INSERT policy or server function with unique normalized emails. Do not grant anonymous subscriber SELECT.
 4. Enter channel/social/contact/branding settings in public `site_settings`, then publish verified content and valid video/PDF URLs through the Admin Panel. No fabricated statutory text, judgments or videos are included.
 5. For Netlify, import the source into GitHub, connect that repository to Netlify, add the two public environment variables and deploy using the included configuration. Set the canonical production origin if using a custom domain. Follow README.md for exact steps.
 6. Verify live search, PDF access and newsletter capture against the real Supabase project after deployment. Sending newsletters requires your own email delivery workflow.
 
 Live Supabase data, live RLS enforcement and a Netlify deployment cannot be verified without the owner's project connection and hosting setup. The Sites publication preserves the existing Site audience.
+
+## BNS and Family Law SQL import
+
+The supplied `schema.sql` public seed excerpts are now mapped into the existing content interfaces: 2 Acts, 3 chapters and 6 sections (BNS 1/2/4; Hindu Marriage Act 1/2/5). They are available without a live Supabase connection. Each imported reading page clearly labels the source as an abbreviated database excerpt. Only the selected active public content was extracted; the SQL was never executed and private/admin records are excluded. A configured Supabase backend remains authoritative and never silently falls back to the snapshot on empty results or errors. See DATABASE-IMPORT.md for exact mappings and regeneration.
+
+Import validation passed: deterministic extraction of selected active records; no private/admin content in the public dataset; service filtering, pagination, numeric search and configured-Supabase authority; all six displayed section bodies matched the extracted text exactly; refreshes, chapter/category filters, previous/next links, keyboard tabs, numeric/Family Law search, and 16 responsive route checks passed with no browser errors. The production build passed, and the sitemap includes 21 active public routes.

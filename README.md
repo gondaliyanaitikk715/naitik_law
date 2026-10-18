@@ -26,7 +26,7 @@ npm run dev
 
 Vite prints the local development URL. Restart it after changing environment variables. Vite embeds `VITE_` values into the browser build; use only a publishable/public key. Never place a service-role key, secret key or administrative credential here.
 
-The site runs without credentials and displays friendly empty library states. Connect the database and publish content through the existing Admin Panel to populate the library. External social and channel buttons become available when their URLs are set in `site_settings`.
+Without credentials, the site now displays the supplied public BNS and Hindu Marriage Act database excerpts: 2 Acts, 3 chapters and 6 sections. Other libraries retain friendly empty states. See [the database import notes](docs/DATABASE-IMPORT.md) for provenance, scope and the safe extraction command. The uploaded MySQL schema is not executed or shipped; no private/admin records are imported. A configured Supabase project remains authoritative, including when its queries return empty results or errors; the snapshot is used only when Supabase is not configured. Connect the database and publish content through the existing Admin Panel to populate the library. External social and channel buttons become available when their URLs are set in `site_settings`.
 
 ## Build and validation
 
@@ -44,6 +44,8 @@ The build performs TypeScript checking, produces `dist/`, then generates `dist/r
 | --- | --- |
 | `/` | Home |
 | `/bare-acts` | Searchable Act library |
+| `/family-law` | Family Law Act library |
+| `/family-law/:sectionSlug` | Hindu Marriage Act section excerpts |
 | `/bare-acts/:actSlug` | Act, chapters and paged sections |
 | `/bns`, `/bnss`, `/bsa` | Dedicated code browsers |
 | `/bns/:sectionSlug`, `/bnss/:sectionSlug`, `/bsa/:sectionSlug` | Section details |
@@ -80,7 +82,7 @@ Universal search runs seven bounded server queries in parallel, with up to six r
 
 ## Content, SEO and accessibility
 
-Site identity, channel/social URLs, contact details and default metadata are centralized in `site_settings`, with brand defaults when settings are unavailable. Detail pages set their own title and description. `public/robots.txt`, `public/sitemap.xml` and the bundled SVG favicon are included. `scripts/generate-seo.mjs` writes the production robots file and a sitemap for the 12 main public routes during each build, using `VITE_SITE_URL` or Netlify's automatic `URL` environment variable. An unknown/invalid domain produces a valid empty sitemap without fabricated URLs. Extend the sitemap with published detail URLs through the existing Admin Panel or deployment pipeline; the build does not download legal content or need database access for SEO files.
+Site identity, channel/social URLs, contact details and default metadata are centralized in `site_settings`, with brand defaults when settings are unavailable. Detail pages set their own title and description. `public/robots.txt`, `public/sitemap.xml` and the bundled SVG favicon are included. `scripts/generate-seo.mjs` writes the production robots file and a sitemap for the main public routes and the active imported Act/section routes during each build, using `VITE_SITE_URL` or Netlify's automatic `URL` environment variable. An unknown/invalid domain produces a valid empty sitemap without fabricated URLs. Extend the sitemap with published detail URLs through the existing Admin Panel or deployment pipeline; the build does not download legal content or need database access for SEO files.
 
 The responsive layout includes a mobile menu, collapsible chapter navigation, paged content, image lazy loading, skeleton/error/empty states and a saved light/dark preference. Controls have labels, focus states and keyboard support. Rich legal text is rendered as plain text rather than injected HTML.
 
@@ -98,3 +100,5 @@ The responsive layout includes a mobile menu, collapsible chapter navigation, pa
 ## Remaining owner setup
 
 Connect the existing Supabase project; confirm column mappings and RLS; add the subscriber uniqueness constraint if absent; provide public settings and valid external URLs; publish verified legal content, video records and PDF Storage URLs through the Admin Panel; configure the production site origin; then deploy to Netlify and test against the actual project. Content availability and newsletter delivery depend on those services. Subscriber capture stores an address; sending newsletters requires your separate email workflow.
+
+The included SQL snapshot uses the existing public `acts`/`chapters`/`sections` interface after mapping MySQL `legal_contents` to sections. It does not create a second backend or insert records into Supabase. Browser reads use a lazy-loaded public-only JSON chunk while no live backend is configured.

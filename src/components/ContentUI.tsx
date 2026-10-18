@@ -42,7 +42,7 @@ export function recordHref(table: ContentTable | string, record: ContentRecord, 
   if (table === 'acts') return `/bare-acts/${slug}`;
   if (table === 'sections') {
     const code = (actCode || first(record, 'act_code', 'act_short_name')).toLowerCase();
-    return `${['bns', 'bnss', 'bsa'].includes(code) ? `/${code}` : '/sections'}/${slug}`;
+    return `${code === 'hma' ? '/family-law' : ['bns', 'bnss', 'bsa'].includes(code) ? `/${code}` : '/sections'}/${slug}`;
   }
   if (table === 'constitution_articles') return `/constitution/${slug}`;
   if (table === 'case_laws') return `/case-laws/${slug}`;
@@ -92,13 +92,18 @@ export function LibraryCard({ record, table, href }: { record: ContentRecord; ta
   return <Link className={`content-card library-card library-card-${table}`} to={href || recordHref(table, record)}>{image && <img className="library-card-image" src={image} alt="" loading="lazy" />}<div className="library-card-body">{!image && <span className="library-card-icon"><BookOpen size={25} strokeWidth={1.6} /></span>}<div className="card-topline">{category && <span className="badge">{category}</span>}{first(record, 'year') && <span className="muted">{first(record, 'year')}</span>}</div><h2>{title}</h2>{first(record, 'short_name') && first(record, 'short_name') !== title && <p className="card-short-name">{first(record, 'short_name')}</p>}{first(record, 'citation', 'court') && <p className="card-citation">{[first(record, 'citation'), first(record, 'court')].filter(Boolean).join(' · ')}</p>}{excerpt && <p className="card-excerpt">{excerpt}</p>}<div className="card-bottom">{date ? <span className="muted">{date}</span> : <span className="muted">Explore the resource</span>}<ArrowRight size={18} aria-hidden="true" /></div></div></Link>;
 }
 
-export function ReadingBlock({ title, value, empty = 'An explanation will be available when this content is published.' }: { title?: string; value: unknown; empty?: string }) {
-  const content = plain(value);
-  return <section className="reading-block">{title && <h2>{title}</h2>}{content ? <div className="reading-copy">{content.split(/\n\s*\n/).filter(Boolean).map((paragraph, i) => <p key={i}>{paragraph}</p>)}</div> : <p className="muted">{empty}</p>}</section>;
+export function ReadingBlock({ title, value, empty = 'An explanation will be available when this content is published.', verbatim = false }: { title?: string; value: unknown; empty?: string; verbatim?: boolean }) {
+  const content = verbatim ? text(value) : plain(value);
+  return <section className="reading-block">{title && <h2>{title}</h2>}{content ? <div className={`reading-copy${verbatim ? ' reading-copy-verbatim' : ''}`}>{verbatim ? <p>{content}</p> : content.split(/\n\s*\n/).filter(Boolean).map((paragraph, i) => <p key={i}>{paragraph}</p>)}</div> : <p className="muted">{empty}</p>}</section>;
 }
 
 export function DetailTabs({ tabs, active, onChange }: { tabs: string[]; active: string; onChange: (tab: string) => void }) {
   return <div className="tabs" role="tablist" aria-label="Reading sections">{tabs.map((tab, index) => <button type="button" key={tab} id={`tab-${tab.replace(/\s/g, '-')}`} aria-controls="reading-panel" aria-selected={active === tab} tabIndex={active === tab ? 0 : -1} role="tab" className={`tab ${active === tab ? 'active' : ''}`} onClick={() => onChange(tab)} onKeyDown={event => { const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0; if (!direction && event.key !== 'Home' && event.key !== 'End') return; event.preventDefault(); const next = event.key === 'Home' ? tabs[0] : event.key === 'End' ? tabs[tabs.length - 1] : tabs[(index + direction + tabs.length) % tabs.length]; onChange(next); document.getElementById(`tab-${next.replace(/\s/g, '-')}`)?.focus(); }}>{tab}</button>)}</div>;
+}
+
+export function SourceNotice({ record }: { record: ContentRecord }) {
+  if (!first(record, 'content_notice')) return null;
+  return <aside className="source-notice" aria-label="Content source notice"><FileText size={21} aria-hidden="true" /><div><h2>Database excerpt</h2><p>This supplied excerpt may be abridged. Check the complete current provision against an official source.</p></div></aside>;
 }
 
 export function LearningNote() {

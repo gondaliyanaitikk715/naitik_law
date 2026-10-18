@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "source": "schema.sql",
+    "source_format": "MySQL seed data",
+    "content_notice": "Imported database excerpt. Verify the complete current provision from an official source.",
+    "scope": "BNS and Family Law (Hindu Marriage Act, 1955) only",
+    "source_act_ids": [
+      2,
+      11
+    ],
+    "content_scope": "Abbreviated sample provisions supplied by the database seed; these are not complete Acts or verified current statutory text.",
+    "counts": {
+      "acts": 2,
+      "chapters": 3,
+      "sections": 6
+    },
+    "execution": "Read-only text parsing; no SQL statements executed."
+  },
+  "acts": [
+    {
+      "id": "import-act-bns",
+      "slug": "bns",
+      "short_name": "BNS",
+      "title": "Bharatiya Nyaya Sanhita, 2023",
+      "name": "Bharatiya Nyaya Sanhita, 2023",
+      "year": 2023,
+      "act_number": "Act No. 45 of 2023",
+      "description": "The official criminal code of India, replacing the Indian Penal Code (IPC).",
+      "category": "Criminal Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-act-hma",
+      "slug": "hindu-marriage-act-1955",
+      "short_name": "HMA",
+      "title": "Hindu Marriage Act, 1955",
+      "name": "Hindu Marriage Act, 1955",
+      "year": 1955,
+      "act_number": "Act No. 25 of 1955",
+      "description": "An Act to amend and codify the law relating to marriage among Hindus.",
+      "category": "Family Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    }
+  ],
+  "chapters": [
+    {
+      "id": "import-chapter-5",
+      "slug": "bns-chapter-i",
+      "act_id": "import-act-bns",
+      "chapter_number": 1,
+      "order_num": 1,
+      "title": "Preliminary",
+      "name": "Chapter I",
+      "description": "Short title, commencement, and definitions.",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-chapter-6",
+      "slug": "bns-chapter-ii",
+      "act_id": "import-act-bns",
+      "chapter_number": 2,
+      "order_num": 2,
+      "title": "Of Punishments",
+      "name": "Chapter II",
+      "description": "Types and rules of punishments under the criminal code.",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-chapter-21",
+      "slug": "hma-chapter-i",
+      "act_id": "import-act-hma",
+      "chapter_number": 1,
+      "order_num": 1,
+      "title": "Preliminary",
+      "name": "Chapter I",
+      "description": "Extent, application and essential conditions for marriage.",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    }
+  ],
+  "sections": [
+    {
+      "id": "import-section-bns-1",
+      "slug": "section-1-short-title-commencement-and-application",
+      "act_id": "import-act-bns",
+      "chapter_id": "import-chapter-5",
+      "act_code": "bns",
+      "section_number": 1,
+      "title": "Short title, commencement and application",
+      "section_text": "(1) This Act may be called the Bharatiya Nyaya Sanhita, 2023.\n\n(2) It shall come into force on such date as the Central Government may, by notification in the Official Gazette, appoint.\n\n(3) Every person shall be liable to punishment under this Sanhita and not otherwise for every act or omission contrary to the provisions thereof.",
+      "category": "Criminal Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-section-bns-2",
+      "slug": "section-2-definitions",
+      "act_id": "import-act-bns",
+      "chapter_id": "import-chapter-5",
+      "act_code": "bns",
+      "section_number": 2,
+      "title": "Definitions",
+      "section_text": "In this Sanhita, unless the context otherwise requires,—\n\n\"act\" denotes as well a series of acts as a single act;\n\n\"animal\" denotes any living creature, other than a human being;\n\n\"child\" means a person who has not completed eighteen years of age;\n\n\"court\" means a Judge who is empowered by law to act judicially alone.",
+      "category": "Criminal Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-section-bns-4",
+      "slug": "section-4-punishments",
+      "act_id": "import-act-bns",
+      "chapter_id": "import-chapter-6",
+      "act_code": "bns",
+      "section_number": 4,
+      "title": "Punishments",
+      "section_text": "The punishments to which offenders are liable under the provisions of this Sanhita are—\n\nFirst.— Death;\n\nSecondly.— Imprisonment for life;\n\nThirdly.— Imprisonment, which may be of two descriptions, namely:— (a) Rigorous, that is, with hard labour; (b) Simple;\n\nFourthly.— Forfeiture of property;\n\nFifthly.— Fine;\n\nSixthly.— Community service.",
+      "category": "Criminal Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-section-hma-1",
+      "slug": "section-1-short-title-and-extent",
+      "act_id": "import-act-hma",
+      "chapter_id": "import-chapter-21",
+      "act_code": "hma",
+      "section_number": 1,
+      "title": "Short title and extent",
+      "section_text": "(1) This Act may be called the Hindu Marriage Act, 1955.\n\n(2) It extends to the whole of India.",
+      "category": "Family Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-section-hma-2",
+      "slug": "section-2-application-of-act",
+      "act_id": "import-act-hma",
+      "chapter_id": "import-chapter-21",
+      "act_code": "hma",
+      "section_number": 2,
+      "title": "Application of Act",
+      "section_text": "(1) This Act applies—\n\n(a) to any person who is a Hindu by religion in any of its forms or developments;\n\n(b) to any person who is a Buddhist, Jaina or Sikh by religion;\n\n(c) to any other person domiciled in the territories to which this Act extends who is not a Muslim, Christian, Parsi or Jew by religion.",
+      "category": "Family Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    },
+    {
+      "id": "import-section-hma-5",
+      "slug": "section-5-conditions-for-a-hindu-marriage",
+      "act_id": "import-act-hma",
+      "chapter_id": "import-chapter-21",
+      "act_code": "hma",
+      "section_number": 5,
+      "title": "Conditions for a Hindu marriage",
+      "section_text": "A marriage may be solemnized between any two Hindus, if the following conditions are fulfilled, namely:—\n\n(i) neither party has a spouse living at the time of the marriage;\n\n(ii) at the time of the marriage, neither party is incapable of giving a valid consent to it in consequence of unsoundness of mind;\n\n(iii) the bridegroom has completed the age of twenty-one years and the bride the age of eighteen years at the time of the marriage.",
+      "category": "Family Law",
+      "status": "published",
+      "source": "schema.sql",
+      "source_format": "MySQL seed data",
+      "content_notice": "Imported database excerpt. Verify the complete current provision from an official source."
+    }
+  ]
+}

@@ -1,5 +1,9 @@
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
 import type { ContentOptions, ContentPage, ContentRecord, ContentTable, SearchPage, SiteSettings } from '../types/content';
+import { getImported, hasImportedContent, listImported } from './imported-content';
+
+/** A connected Supabase project remains the authoritative source. */
+export function isContentSourceAvailable(table?: ContentTable): boolean { return isSupabaseConfigured || hasImportedContent(table); }
 
 export const defaultSettings: SiteSettings = {
   website_name: 'NAITIK LAW',
@@ -109,8 +113,9 @@ function searchExpression(table: ContentTable, input: string): string {
 
 export async function listPublished(table: ContentTable, options: ContentOptions = {}): Promise<ContentPage> {
   const { page, pageSize } = pageNumbers(options);
-  const empty: ContentPage = { items: [], total: 0, page, pageSize, totalPages: 0, configured: isSupabaseConfigured };
-  if (!supabase || options.enabled === false) return empty;
+  const empty: ContentPage = { items: [], total: 0, page, pageSize, totalPages: 0, configured: isContentSourceAvailable(table) };
+  if (options.enabled === false) return empty;
+  if (!supabase) return listImported(table, options);
 
   // Sections must always have an act/chapter scope unless a bounded search is active.
   if (table === 'sections' && !options.filters?.act_id && !options.filters?.chapter_id && !options.search?.trim()) return empty;
@@ -142,7 +147,8 @@ export async function listPublished(table: ContentTable, options: ContentOptions
 }
 
 export async function getPublished(table: ContentTable, slug: string): Promise<ContentRecord | null> {
-  if (!supabase || !slug) return null;
+  if (!slug) return null;
+  if (!supabase) return getImported(table, slug);
   return cached(`record:${table}:${slug}`, async () => {
     let query = supabase!.from(table).select('*').eq('status', 'published');
     if (table === 'acts' && /^(bns|bnss|bsa)$/i.test(slug)) query = query.or(`slug.eq.${slug.toLowerCase()},short_name.eq.${slug.toUpperCase()}`);
@@ -161,6 +167,7 @@ export function contentHref(table: ContentTable, record: ContentRecord): string 
   if (base[table]) return `${base[table]}/${slug}`;
   if (table === 'sections') {
     const prefix = String(record.act_code ?? record.act_short_name ?? '').toLowerCase();
+    if (prefix === 'hma') return `/family-law/${slug}`;
     return `${['bns', 'bnss', 'bsa'].includes(prefix) ? `/${prefix}` : '/sections'}/${slug}`;
   }
   return table === 'videos' ? `/videos?q=${encodeURIComponent(record.title)}` : `/notes?q=${encodeURIComponent(record.title)}`;
@@ -171,8 +178,8 @@ export async function searchAll(input: string, page = 1, onlyTable?: ContentTabl
   const currentPage = Math.max(1, Math.floor(page));
   const pageSize = 6;
   const selectedTables = onlyTable ? searchableTables.filter((table) => table === onlyTable) : searchableTables;
-  const empty: SearchPage = { items: [], total: 0, page: currentPage, pageSize: pageSize * selectedTables.length, totalPages: 0, configured: isSupabaseConfigured };
-  if (!query || !supabase) return empty;
+  const empty: SearchPage = { items: [], total: 0, page: currentPage, pageSize: pageSize * selectedTables.length, totalPages: 0, configured: isContentSourceAvailable() };
+  if (!query) return empty;
   return cached(`search:${query}:${currentPage}:${onlyTable ?? 'all'}`, async () => {
     // An act lookup scopes numeric searches such as BNS 103 to the correct code.
     const codeMatch = query.match(/^(BNS|BNSS|BSA)\s*(?:section\s*)?(\d+[a-z]?)$/i);

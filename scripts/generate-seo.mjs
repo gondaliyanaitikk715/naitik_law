@@ -22,7 +22,13 @@ function xml(value) {
 }
 
 const origin = canonicalOrigin(candidate);
-const routes = ['/', '/bare-acts', '/bns', '/bnss', '/bsa', '/constitution', '/case-laws', '/notes', '/videos', '/blog', '/about', '/search'];
+const routes = ['/', '/bare-acts', '/bns', '/bnss', '/bsa', '/constitution', '/case-laws', '/notes', '/videos', '/blog', '/about', '/search', '/family-law'];
+const liveSource = Boolean((process.env.VITE_SUPABASE_URL || env.VITE_SUPABASE_URL) && (process.env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY));
+if (!liveSource) {
+  const imported = JSON.parse(await readFile(join(projectRoot, 'src/data/imported-legal-content.json'), 'utf8'));
+  for (const act of imported.acts.filter(record => record.status === 'published')) routes.push(`/bare-acts/${encodeURIComponent(act.slug)}`);
+  for (const section of imported.sections.filter(record => record.status === 'published')) routes.push(`${section.act_code === 'bns' ? '/bns' : '/family-law'}/${encodeURIComponent(section.slug)}`);
+}
 const entries = origin ? routes.map((path) => `  <url><loc>${xml(`${origin}${path}`)}</loc></url>`).join('\n') : '';
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}${entries ? '\n' : ''}</urlset>\n`;
 const robots = `User-agent: *\nAllow: /\n${origin ? `\nSitemap: ${origin}/sitemap.xml\n` : ''}`;
